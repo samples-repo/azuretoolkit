@@ -11,7 +11,7 @@ export class UserService {
     private originUrl: string;
     private aadUser: AADUser;
 
-    constructor(private http: HttpClient, @Inject('ORIGIN_URL')originUrl: string) {
+    constructor(private http: HttpClient, originUrl: string) {
         this.originUrl = originUrl;
     }
 
