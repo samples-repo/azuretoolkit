@@ -16,7 +16,7 @@ export class UserService {
     }
 
     public getUser(): Observable<User> {
-        return this.http.get('${this.originUrl}/.auth/me')
+        return this.http.get(`${this.originUrl}/.auth/me`)
             .map(response => {
                 try {
                     // console.log(response);
