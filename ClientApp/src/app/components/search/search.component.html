@@ -17,8 +17,10 @@
             <div>
                 <span class="tag label" 
                     [ngClass]="{'label-default': tag.confidence >= .75, 'label-warning': tag.confidence >= .5 && tag.confidence < .75, 'label-danger': tag.confidence < .5}" 
-                    *ngFor="let tag of currentAnalytics?.tags">-{{tag.name}}-</span>
+                    *ngFor="let tag of currentAnalytics?.tags">{{tag.name}} </span>
             </div>
+            <button *ngIf="!currentItemSaved" (click)="saveImage()">Save Image</button>
+            <span *ngIf="currentItemSaved">Image Saved!</span>
         </div>
         <div *ngIf="isAnalyzing">
             <h4>Analyzing Photo</h4>

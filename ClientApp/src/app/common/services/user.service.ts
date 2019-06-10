@@ -1,17 +1,18 @@
-import { Injectable, InjectionToken, Inject } from '@angular/core';
+import { Injectable, InjectionToken, Inject, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { User, AADUser } from '../models/user';
+import { injectChangeDetectorRef } from '@angular/core/src/render3';
 
 @Injectable()
 export class UserService {
     private originUrl: string;
     private aadUser: AADUser;
 
-    constructor(private http: HttpClient, originUrl: string) {
+    constructor(private http: HttpClient, @Inject('ORIGIN_URL')originUrl: string) {
         this.originUrl = originUrl;
     }
 
