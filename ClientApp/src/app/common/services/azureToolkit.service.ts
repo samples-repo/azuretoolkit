@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { ImagePostRequest } from '../models/ImagePostRequest';
 
 @Injectable()
 export class AzureToolkitService {
@@ -13,7 +14,7 @@ export class AzureToolkitService {
         this.originUrl = originUrl;
     }
 
-    public saveImage(imagePostRequest: { url: string, id: string, encodingFormat: string}): Observable<boolean> {
+    public saveImage(imagePostRequest: ImagePostRequest): Observable<boolean> {
         //console.log(imagePostRequest);
         //console.log(`${this.originUrl}/api/images`);
         return this.http.post(`${this.originUrl}api/images`, imagePostRequest)            

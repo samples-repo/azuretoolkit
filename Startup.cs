@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AzureToolkit.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AzureToolkit
 {
@@ -27,6 +29,9 @@ namespace AzureToolkit
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            var connection = @"Server=tcp:azuretoolkit-server.database.windows.net,1433;Initial Catalog=azuretoolkit-db;Persist Security Info=False;User ID=sadmin;Password=Password01!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            services.AddDbContext<AzureToolkitContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

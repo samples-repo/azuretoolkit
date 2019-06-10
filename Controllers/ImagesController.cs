@@ -15,8 +15,12 @@ namespace AzureToolkit.Controllers
     public class ImagesController: Controller
     {
         private CloudBlobContainer _container;
+        private AzureToolkitContext _context;
 
-        public ImagesController(){
+        public ImagesController(AzureToolkitContext context)
+        {
+            _context = context; 
+            
             var storageAccount = new CloudStorageAccount(
                 new StorageCredentials(
                     "azuretktstorage",
@@ -32,12 +36,29 @@ namespace AzureToolkit.Controllers
         [HttpPost]
         public async Task<IActionResult> PostImage([FromBody]ImagePostRequest request)
         {
+            // upload image
             CloudBlockBlob blockBlob = _container.GetBlockBlobReference($"{request.Id}.{request.EncodingFormat}");
             HttpWebRequest aRequest = (HttpWebRequest)WebRequest.Create(request.URL);
             HttpWebResponse aResponse = (await aRequest.GetResponseAsync()) as HttpWebResponse;
             var stream = aResponse.GetResponseStream();
             await blockBlob.UploadFromStreamAsync(stream);
             stream.Dispose();
+
+            // save metadata
+            var savedImage = new SavedImage{
+                UserId = request.Id,
+                Description = request.Description,
+                StorageUrl = blockBlob.Uri.ToString(),
+                Tags = new List<SavedImageTag>(),
+            };
+            foreach (var tag in request.Tags)
+            {
+                savedImage.Tags.Add(new SavedImageTag{Tag = tag});
+            }
+
+            _context.Add(savedImage);
+            _context.SaveChanges();
+
             return Ok();
         }
     }
