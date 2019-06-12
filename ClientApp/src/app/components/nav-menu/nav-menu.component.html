@@ -19,6 +19,11 @@
           <li class="nav-item" [routerLinkActive]='["link-active"]'>
             <a class="nav-link text-dark" [routerLink]='["/fetch-data"]'>Fetch data</a>
           </li>
+          <li [routerLinkActive]="['link-active']">
+            <a [routerLink]="['/gallery']">
+              <span class="glyphicon glyphicon-search"></span> Gallery
+            </a>
+          </li>
         </ul>
       </div>
     </div>

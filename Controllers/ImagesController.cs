@@ -61,5 +61,15 @@ namespace AzureToolkit.Controllers
 
             return Ok();
         }
+
+        //[HttpGet("{userId}")]
+        //public IActionResult GetImages(string userId)
+        [HttpGet]
+        public IActionResult GetImages()
+        {
+            //var images = _context.SavedImages.Where(img => img.UserId == userId).ToList();
+            var images = _context.SavedImages.ToList();
+            return Ok(images);
+        }
     }
 }

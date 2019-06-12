@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { ImagePostRequest } from '../models/ImagePostRequest';
+import { SavedImage } from '../models/SavedImage';
 
 @Injectable()
 export class AzureToolkitService {
@@ -23,6 +24,22 @@ export class AzureToolkitService {
                return true;
             })
             .catch(this.handleError);
+    }
+
+    //public getImages(userId: string): Observable<SavedImage[]> {
+    //    return this.http.get(`${this.originUrl}api/images/${userId}`)
+    //        .map(images => {
+    //            console.log(images);
+    //            return images as SavedImage[];
+    //        }).catch(this.handleError);
+    //}
+
+    public getImages(): Observable<SavedImage[]> {
+        return this.http.get(`${this.originUrl}api/images`)
+            .map(images => {
+                console.log(images);
+                return images as SavedImage[];
+            }).catch(this.handleError);
     }
 
     private handleError(error: any): Promise<any> {
