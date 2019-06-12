@@ -37,7 +37,7 @@ export class AzureToolkitService {
     public getImages(): Observable<SavedImage[]> {
         return this.http.get(`${this.originUrl}api/images`)
             .map(images => {
-                console.log(images);
+                //console.log(images);
                 return images as SavedImage[];
             }).catch(this.handleError);
     }

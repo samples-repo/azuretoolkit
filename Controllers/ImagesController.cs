@@ -8,6 +8,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using System.Net;
 using Microsoft.WindowsAzure.Storage.Auth;
 using AzureToolkit.Models;
+using Microsoft.Azure.Search;
+using Microsoft.Azure.Search.Models;
+using System.Diagnostics;
 
 namespace AzureToolkit.Controllers
 {
@@ -70,6 +73,31 @@ namespace AzureToolkit.Controllers
             //var images = _context.SavedImages.Where(img => img.UserId == userId).ToList();
             var images = _context.SavedImages.ToList();
             return Ok(images);
+        }
+
+        [HttpGet("search/{userId}/{term}")]
+        public IActionResult SearchImages(string userId, string term)
+        {
+            string searchServiceName ="azuretoolkit-search";
+            string queryApiKey = "4CAC13492C775D5502C254A0F55F9D87";
+
+            DocumentSearchResult<SavedImage> results = null;
+
+            try
+            {
+                SearchIndexClient indexClient = new SearchIndexClient(searchServiceName, "description", new SearchCredentials(queryApiKey));
+
+                SearchParameters parameters = new SearchParameters() { Filter = $"UserId eq '{userId}'" };
+                //DocumentSearchResult<SavedImage> results = indexClient.Documents.Search<SavedImage>(term, parameters);
+                results = indexClient.Documents.Search<SavedImage>(term);
+                
+            }
+            catch (Exception ex)
+            {                
+                Debug.WriteLine($".........{ex.ToString()}");
+            }
+            
+            return Ok(results.Results.Select((savedImage) => savedImage.Document));    
         }
     }
 }
